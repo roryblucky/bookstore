@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="boostore:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="bookstore.war">
-      <element id="artifact" artifact-name="boostore:war exploded" />
-    </root>
-  </artifact>
-</component>
