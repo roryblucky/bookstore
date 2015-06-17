@@ -26,7 +26,7 @@
     <tr>
         <td colspan="3">
             <input type="button"
-                   onclick="javascript:location='${pageContext.request.contextPath}/system/category/addCategory.jsp'"
+                   onclick="location='${pageContext.request.contextPath}/system/category/addCategory.jsp'"
                    value="增加分类"/>
         </td>
     </tr>

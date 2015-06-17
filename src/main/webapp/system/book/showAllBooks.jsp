@@ -32,7 +32,7 @@
     <tr>
         <td colspan="6">
             <input type="button"
-                   onclick="javascript:location='${pageContext.request.contextPath}/book_getCategories.action'"
+                   onclick="location='${pageContext.request.contextPath}/book_getCategories.action'"
                    value="增加书籍"/>
         </td>
     </tr>
