@@ -2,6 +2,7 @@ package com.rory.bookstore.dao.impl;
 
 import com.rory.bookstore.dao.IBookDao;
 import com.rory.bookstore.domain.Book;
+import com.rory.bookstore.domain.Category;
 import com.rory.bookstore.utils.DBUtils;
 
 import java.sql.PreparedStatement;
@@ -48,7 +49,9 @@ public class BookDaoImpl implements IBookDao {
 
     @Override
     public List<Book> findAll() throws SQLException {
-        final String sql = "select * from tb_book";
+        final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description," +
+                " c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
+                "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id";
         PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
         List<Book> books = new LinkedList<>();
@@ -61,7 +64,11 @@ public class BookDaoImpl implements IBookDao {
                 book.setPrice(rs.getFloat("price"));
                 book.setPicturePath(rs.getString("picture_path"));
                 book.setDescription(rs.getString("description"));
-                book.setCategory(new CategoryDaoImpl().findById(rs.getString("category_id")));
+                Category category = new Category();
+                category.setId(rs.getString("categoryId"));
+                category.setName(rs.getString("categoryName"));
+                category.setDescription(rs.getString("categoryDesc"));
+                book.setCategory(category);
                 books.add(book);
             }
         }
@@ -71,13 +78,19 @@ public class BookDaoImpl implements IBookDao {
 
     @Override
     public Book findById(String bookId) throws SQLException {
-        final String sql = "select * from tb_book where id = ?";
+        final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description, " +
+                "c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
+                "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id WHERE b.id = ?";
         PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, bookId);
         ResultSet rs = preparedStatement.executeQuery();
         Book book = null;
         if (rs.next()) {
+            Category category = new Category();
+            category.setId(rs.getString("categoryId"));
+            category.setName(rs.getString("categoryName"));
+            category.setDescription(rs.getString("categoryDesc"));
             book = new Book(rs.getString("id"), rs.getString("name"), rs.getString("author"),
-                    rs.getFloat("price"), rs.getString("picture_path"), new CategoryDaoImpl().findById(rs.getString("category_id")),
+                    rs.getFloat("price"), rs.getString("picture_path"), category,
                     rs.getString("description"));
         }
         DBUtils.closeConnection();

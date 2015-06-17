@@ -50,7 +50,7 @@ public class CategoryDaoImpl implements ICategoryDao {
         final String sql = "select * from tb_category";
         PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
-        List<Category> categories = new LinkedList<Category>();
+        List<Category> categories = new LinkedList<>();
         if (rs != null) {
             while (rs.next()) {
                 Category category = new Category(rs.getString("id"), rs.getString("name"), rs.getString("description"));
@@ -69,8 +69,8 @@ public class CategoryDaoImpl implements ICategoryDao {
         Category category = null;
         if (rs.next()) {
             category = new Category(rs.getString("id"), rs.getString("name"), rs.getString("description"));
-            rs.close();
         }
+        DBUtils.closeConnection();
         return category;
     }
 }
