@@ -1,6 +1,7 @@
 package com.rory.bookstore.utils;
 
 import com.rory.bookstore.web.bean.SignatureVo;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -33,10 +34,13 @@ public class MailUtils {
         msg.setRecipients(MimeMessage.RecipientType.TO, signatureVo.getReceiver());
         msg.setSubject("欢迎来到XXXXX书城");
 
-        String url = "http://localhost:8080/bookstore/user_activeUser.action?verifyCode=" + signatureVo.getSignature();
+        String url = "http://localhost:8080/bookstore/user_activeUser.action?userName="
+                + Base64.encodeBase64String(signatureVo.getUserName().getBytes())
+                + "&verifyCode=" + signatureVo.getSignature();
+
         String htmlText = "<html>" +
                 "<body><p>您好，" + signatureVo.getUserName() + "：<br/>" +
-                "<p>请点击以下连接激活账户（30分钟有效）</p>" +
+                "<p>请点击以下连接激活账户</p>" +
                 "<a href='" + url + "'>点我激活</a>" +
                 "<p>Regards,<br/>Rory</p><body></html>";
         msg.setContent(htmlText, "text/html;charset=UTF-8");
