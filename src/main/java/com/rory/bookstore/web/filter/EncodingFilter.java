@@ -50,9 +50,12 @@ public class EncodingFilter implements Filter {
         public String getParameter(String name) {
             String value = request.getParameter(name);
 
-            if (!StringUtils.isEmpty(value) && "GET".equalsIgnoreCase(request.getMethod())) {
+            if (value == null)
+                return null;
+
+            if ("GET".equalsIgnoreCase(request.getMethod())) {
                 try {
-                    value = new String(value.getBytes("ISO-8859-1"), encoding);
+                    value = new String(value.getBytes("ISO-8859-1"), request.getCharacterEncoding());
                 } catch (UnsupportedEncodingException e) {
                 }
             }

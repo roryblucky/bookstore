@@ -1,11 +1,16 @@
 <%--
   User: RoryGao
-  Date: 15/6/14
-  Time: 10:47
+  Date: 15/6/20
+  Time: 16:52
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@include file="../header.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="header.jsp" %>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
 <table border="1" width="435">
     <tr>
         <th>书籍名称</th>
@@ -28,25 +33,18 @@
             <td>${item.category.name}</td>
             <td>${item.description}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/book_showBookInfo.action?id=${item.id}">修改</a>
-                <a href="${pageContext.request.contextPath}/book_removeBook.action?id=${item.id}">删除</a>
+                <a href="${pageContext.request.contextPath}/book_add2Cart.action?id=${item.id}">添加到购物车</a>
             </td>
         </tr>
 
     </c:forEach>
     <tr>
-        <td colspan="3">
-            <input type="button"
-                   onclick="location='${pageContext.request.contextPath}/book_getCategories.action'"
-                   value="增加书籍"/>
-        </td>
-        <td colspan="3">
+        <td colspan="6">
             第${pageBean.currentPage}页&nbsp;&nbsp;共${pageBean.totalPages}页&nbsp;&nbsp;
             <a href="${pageContext.request.contextPath}/book_showAllBooks.action?pageNum=${pageBean.currentPage - 1 > 0 ? pageBean.currentPage - 1 : 1}">上一页</a>
             <a href="${pageContext.request.contextPath}/book_showAllBooks.action?pageNum=${pageBean.currentPage + 1 > pageBean.totalPages? pageBean.totalPages : pageBean.currentPage + 1}">下一页</a>
         </td>
     </tr>
 </table>
-
 </body>
 </html>

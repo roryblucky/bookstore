@@ -12,16 +12,16 @@
 </head>
 <div style="text-align: right;">
     <a href="${pageContext.request.contextPath}">首页</a>
-    <c:if test="${sessionScope.customer==null }">
+    <c:if test="${sessionScope.user==null }">
         <a href="${pageContext.request.contextPath}/login.jsp">登录</a>
         <a href="${pageContext.request.contextPath}/register.jsp">注册</a>
     </c:if>
-    <c:if test="${sessionScope.customer!=null }">
-        欢迎您：${sessionScope.customer.username }
-        <a href="${pageContext.request.contextPath}/">注销</a>
+    <c:if test="${sessionScope.user!=null }">
+        欢迎您：${sessionScope.user.name}
+        <a href="${pageContext.request.contextPath}/user_logout.action">注销</a>
         <a href="${pageContext.request.contextPath}/">我的订单</a>
     </c:if>
-    <a href="${pageContext.request.contextPath}/showCart.jsp">我的购物车</a>
+    <a href="${pageContext.request.contextPath}/showcart.jsp">我的购物车</a>
 </div>
 <br/><br/>
 

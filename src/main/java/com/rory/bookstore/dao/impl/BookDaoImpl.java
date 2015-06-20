@@ -48,11 +48,32 @@ public class BookDaoImpl implements IBookDao {
     }
 
     @Override
-    public List<Book> findAll() throws SQLException {
+    public Book findById(String bookId) throws SQLException {
+        final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description, " +
+                "c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
+                "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id WHERE b.id = ?";
+        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, bookId);
+        ResultSet rs = preparedStatement.executeQuery();
+        Book book = null;
+        if (rs.next()) {
+            Category category = new Category();
+            category.setId(rs.getString("categoryId"));
+            category.setName(rs.getString("categoryName"));
+            category.setDescription(rs.getString("categoryDesc"));
+            book = new Book(rs.getString("id"), rs.getString("name"), rs.getString("author"),
+                    rs.getFloat("price"), rs.getString("picture_path"), category,
+                    rs.getString("description"));
+        }
+        DBUtils.closeConnection();
+        return book;
+    }
+
+    @Override
+    public List<Book> findPageRecords(int startIndex, int pageSize) throws SQLException {
         final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description," +
                 " c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
-                "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql);
+                "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id order by b.name limit ?, ? ";
+        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, startIndex, pageSize);
         ResultSet rs = preparedStatement.executeQuery();
         List<Book> books = new LinkedList<>();
         if (rs != null) {
@@ -77,23 +98,13 @@ public class BookDaoImpl implements IBookDao {
     }
 
     @Override
-    public Book findById(String bookId) throws SQLException {
-        final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description, " +
-                "c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
-                "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id WHERE b.id = ?";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, bookId);
+    public int findBookCount() throws SQLException {
+        final String sql = "select count(*) as totalNum from tb_book";
+        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
-        Book book = null;
         if (rs.next()) {
-            Category category = new Category();
-            category.setId(rs.getString("categoryId"));
-            category.setName(rs.getString("categoryName"));
-            category.setDescription(rs.getString("categoryDesc"));
-            book = new Book(rs.getString("id"), rs.getString("name"), rs.getString("author"),
-                    rs.getFloat("price"), rs.getString("picture_path"), category,
-                    rs.getString("description"));
+            return Integer.parseInt(rs.getString("totalNum"));
         }
-        DBUtils.closeConnection();
-        return book;
+        return 0;
     }
 }

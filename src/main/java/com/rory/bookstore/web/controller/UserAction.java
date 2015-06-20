@@ -2,9 +2,9 @@ package com.rory.bookstore.web.controller;
 
 import com.rory.bookstore.domain.User;
 import com.rory.bookstore.service.IUserService;
-import com.rory.bookstore.service.impl.UserService;
+import com.rory.bookstore.service.impl.UserServiceImpl;
 import com.rory.bookstore.utils.BeanFactory;
-import com.rory.bookstore.utils.MailUtils;
+import com.rory.bookstore.utils.SendMail;
 import com.rory.bookstore.utils.SignatureUtils;
 import com.rory.bookstore.web.bean.SignatureVo;
 
@@ -19,11 +19,25 @@ import java.io.IOException;
 
 public class UserAction {
 
-    private IUserService service = BeanFactory.getInstance(UserService.class);
+    private IUserService service = BeanFactory.getInstance(UserServiceImpl.class);
 
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("hah");
-        return "index.jsp";
+    public String login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = request.getParameter("username");
+        String password = request.getParameter("password");
+        User user = service.findUser(userName, password);
+
+        if (user != null) {
+            request.getSession().setAttribute("user", user);
+            return "redirect:index.jsp";
+        } else {
+            request.setAttribute("errorMsg", "登录失败");
+            return "result/error.jsp";
+        }
+    }
+
+    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().removeAttribute("user");
+        return "redirect:index.jsp";
     }
 
     public String registerUser(HttpServletRequest request, HttpServletResponse response) throws IOException, MessagingException {
@@ -40,31 +54,30 @@ public class UserAction {
         SignatureVo signatureVo = new SignatureVo(userName, verifyCode, emailAddress);
         new Thread(new SendMail(signatureVo)).start();
 
-        return "index.jsp";
+        return "redirect:index.jsp";
     }
 
-    public String activeUser(HttpServletRequest request, HttpServletResponse response) {
-        return null;
-    }
+    public String activeUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = request.getParameter("userName");
+        String verifyCode = request.getParameter("verifyCode");
 
-    private class SendMail implements Runnable {
-        private SignatureVo signatureVo = null;
+        User user = service.findByCode(userName, verifyCode);
 
-        public SendMail(SignatureVo signatureVo) {
-            this.signatureVo = signatureVo;
-        }
-
-        @Override
-        public void run() {
-            try {
-                MailUtils.sendVerifyEmail(signatureVo);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (MessagingException e) {
-                e.printStackTrace();
+        if (user != null && !user.isActive()) {
+            user.setIsActive(true);
+            int result = service.updateUser(user);
+            if (result != -1) {
+                request.setAttribute("msg", "激活成功");
+                return "result/success.jsp";
+            } else {
+                return "result/error.jsp";
             }
+        } else if (user != null && user.isActive()) {
+            request.setAttribute("msg", "账户已激活");
+            return "result/success.jsp";
+        } else {
+            return "result/error.jsp";
         }
+
     }
-
-
 }

@@ -9,12 +9,15 @@ import com.rory.bookstore.service.impl.CategoryServiceImpl;
 import com.rory.bookstore.utils.BeanFactory;
 import com.rory.bookstore.utils.FileUploadUtils;
 import com.rory.bookstore.utils.StringUtils;
+import com.rory.bookstore.web.bean.PageBean;
 import org.apache.commons.fileupload.FileItem;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -26,10 +29,14 @@ public class BookAction {
     private ICategoryService categoryService = BeanFactory.getInstance(CategoryServiceImpl.class);
 
     public String showAllBooks(HttpServletRequest request, HttpServletResponse response) {
-        List<Book> books = bookService.findAll();
-        request.setAttribute("books", books);
-
-        return "/system/book/showAllBooks.jsp";
+        String flag = request.getParameter("flag");
+        PageBean pageBean = bookService.findBooks(request.getParameter("pageNum"));
+        request.setAttribute("pageBean", pageBean);
+        if ("admin".equals(flag)) {
+            return "/system/book/showAllBooks.jsp";
+        } else {
+            return "main.jsp";
+        }
     }
 
     public String showBookInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -84,12 +91,14 @@ public class BookAction {
                     }
                     BeanFactory.setProperty(book, name, value);
                 } else {
-                    book.setPicturePath(FileUploadUtils.uploadFile(fileItem,
-                            new File(request.getServletContext().getRealPath("/upload"))));
+                    if (!StringUtils.isEmpty(fileItem.getName())) {
+                        book.setPicturePath(FileUploadUtils.uploadFile(fileItem,
+                                new File(request.getServletContext().getRealPath("/upload"))));
+                    }
                 }
             }
             bookService.addBook(book);
-            return "redirect:book_showAllBooks.action";
+            return "redirect:book_showAllBooks.action?flag=admin";
         } else {
             response.getWriter().write("<script type='text/javascript'>alert('添加失败！')</script>");
             response.setHeader("Refresh", "0;URL=" + request.getContextPath() + "/book_showAllBooks.action");
@@ -132,4 +141,35 @@ public class BookAction {
             return null;
         }
     }
+
+    public String add2Cart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        @SuppressWarnings("unchecked")
+        List<Book> books = (List<Book>) request.getSession().getAttribute("shopcart");
+        if (books == null) {
+            books = new LinkedList<>();
+        }
+        Book book = bookService.findById(id);
+        if (book != null) {
+            books.add(book);
+        }
+        request.getSession().setAttribute("shopcart", books);
+        request.setAttribute("msg", "添加成功");
+        return "result/success.jsp";
+    }
+
+    public String removeBookFromCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        @SuppressWarnings("unchecked")
+        List<Book> books = (List<Book>) request.getSession().getAttribute("shopcart");
+        Iterator<Book> iterator = books.iterator();
+        while (iterator.hasNext()) {
+            Book book = iterator.next();
+            if (id.equals(book.getId())) {
+                iterator.remove();
+            }
+        }
+        return "redirect:showcart.jsp";
+    }
+
 }

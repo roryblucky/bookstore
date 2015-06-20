@@ -6,9 +6,9 @@ import com.rory.bookstore.domain.Book;
 import com.rory.bookstore.service.IBookService;
 import com.rory.bookstore.utils.BeanFactory;
 import com.rory.bookstore.utils.StringUtils;
+import com.rory.bookstore.web.bean.PageBean;
 
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created by RoryGao on 15/6/13.
@@ -52,14 +52,20 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public List<Book> findAll() {
-        List<Book> books = null;
+    public PageBean findBooks(String pageNum) {
+        int currentPage = 1;
+        if (!StringUtils.isEmpty(pageNum)) {
+            currentPage = Integer.parseInt(pageNum);
+        }
+        PageBean pageBean = null;
         try {
-            books = bookDao.findAll();
+            pageBean = new PageBean(currentPage, bookDao.findBookCount());
+            pageBean.setRecords(bookDao.findPageRecords(pageBean.getStartIndex(), pageBean.getPageSize()));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return books;
+        return pageBean;
     }
 
     @Override
@@ -73,6 +79,4 @@ public class BookServiceImpl implements IBookService {
 
         return book;
     }
-
-
 }

@@ -37,9 +37,9 @@ public class CategoryDaoImpl implements ICategoryDao {
 
     @Override
     public int updateCategory(Category category) throws SQLException {
-        final String sql = "update tb_category set name = ?, description = ?";
+        final String sql = "update tb_category set name = ?, description = ? where id = ?";
         PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql,
-                category.getName(), category.getDescription());
+                category.getName(), category.getDescription(), category.getId());
         int result = preparedStatement.executeUpdate();
         DBUtils.closeConnection();
         return result;

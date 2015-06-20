@@ -17,7 +17,7 @@
         <tr>
             <td>分类描述：</td>
             <td>
-                <textarea rows="3" cols="38" name="description">value="${requestScope.category.description}</textarea>
+                <textarea rows="3" cols="38" name="description">${requestScope.category.description}</textarea>
             </td>
         </tr>
         <tr>

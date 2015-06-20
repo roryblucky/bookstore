@@ -17,6 +17,6 @@ public class MailUtilsTest {
 
     @Test
     public void testSendVerifyEmail() throws Exception {
-        MailUtils.sendVerifyEmail(mailVo);
+        new Thread(new SendMail(mailVo)).start();
     }
 }

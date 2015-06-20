@@ -8,12 +8,11 @@ import com.rory.bookstore.utils.BeanFactory;
 import com.rory.bookstore.utils.StringUtils;
 
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created by RoryGao on 15/6/13.
  */
-public class UserService implements IUserService {
+public class UserServiceImpl implements IUserService {
 
     private IUserDao userDao = BeanFactory.getInstance(UserDaoImpl.class);
 
@@ -52,17 +51,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = null;
-        try {
-            users = userDao.findAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return users;
-    }
-
-    @Override
     public User findById(String id) {
         User user = null;
         try {
@@ -70,6 +58,32 @@ public class UserService implements IUserService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return user;
+    }
+
+    @Override
+    public User findByCode(String name, String verifyCode) {
+        User user = null;
+
+        try {
+            user = userDao.findByCode(name, verifyCode);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    @Override
+    public User findUser(String name, String password) {
+        User user = null;
+
+        try {
+            user = userDao.findUser(name, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return user;
     }
 }

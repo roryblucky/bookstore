@@ -15,7 +15,9 @@ public interface IBookDao {
 
     int updateBook(Book book) throws SQLException;
 
-    List<Book> findAll() throws SQLException;
-
     Book findById(String bookId) throws SQLException;
+
+    List<Book> findPageRecords(int startIndex, int pageSize) throws SQLException;
+
+    int findBookCount() throws SQLException;
 }
