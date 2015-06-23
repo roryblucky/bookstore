@@ -21,7 +21,7 @@
         <a href="${pageContext.request.contextPath}/user_logout.action">注销</a>
         <a href="${pageContext.request.contextPath}/">我的订单</a>
     </c:if>
-    <a href="${pageContext.request.contextPath}/showcart.jsp">我的购物车</a>
+    <a href="${pageContext.request.contextPath}/shopcart_getTotalPrice.action">我的购物车</a>
 </div>
 <br/><br/>
 

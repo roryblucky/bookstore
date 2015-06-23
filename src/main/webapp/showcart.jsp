@@ -5,6 +5,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>购物车</title>
@@ -20,6 +21,7 @@
         <th>描述</th>
         <th>操作</th>
     </tr>
+
     <c:forEach items="${sessionScope.shopcart}" var="item" varStatus="i">
         <tr class="${i.count % 2 == 0 ? 'odd' : 'even'}">
 
@@ -35,9 +37,23 @@
             <td><a href="${pageContext.request.contextPath}/book_removeBookFromCart.action?id=${item.id}">删除</a></td>
         </tr>
     </c:forEach>
+    <c:if test="${totalPrice}">
+        <tr>
+            <td>
+                总价为${requestScope.totalPrice}
+            </td>
+        </tr>
+    </c:if>
     <tr>
         <td>
-            <button onclick="window.location='${pageContext.request.contextPath}/order_commitBill.action'">结算</button>
+            <c:if test="${fn:length(shopcart) > 0}">
+                <button onclick="window.location='${pageContext.request.contextPath}/order_commitBill.action'">结算
+                </button>
+            </c:if>
+
+            <c:if test="${fn:length(shopcart) <= 0}">
+                <a href="${pageContext.request.contextPath}/book_showAllBooks.action">返回首页</a>
+            </c:if>
         </td>
     </tr>
 </table>

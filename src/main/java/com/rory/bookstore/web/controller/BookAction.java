@@ -169,7 +169,11 @@ public class BookAction {
                 iterator.remove();
             }
         }
-        return "redirect:showcart.jsp";
+        if (books.size() > 0) {
+            return "redirect:shopcart_getTotalPrice.action";
+        } else {
+            return "redirect:book_showAllBooks.action";
+        }
     }
 
 }
