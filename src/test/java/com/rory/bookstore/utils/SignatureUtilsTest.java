@@ -13,4 +13,9 @@ public class SignatureUtilsTest {
         String emailAddress = "rorblucky@gmail.com";
         System.out.println(SignatureUtils.generateSignature(userName, emailAddress));
     }
+
+    @Test
+    public void test() {
+        System.out.println(StringUtils.getUUID());
+    }
 }

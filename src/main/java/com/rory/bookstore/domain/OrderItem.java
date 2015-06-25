@@ -1,7 +1,7 @@
 package com.rory.bookstore.domain;
 
 /**
- * Created by RoryGao on 2015/6/23.
+ * Created by RoryGao on 15/6/25.
  */
 public class OrderItem {
     private String id;

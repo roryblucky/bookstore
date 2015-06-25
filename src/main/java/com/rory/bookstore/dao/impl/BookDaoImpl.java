@@ -5,7 +5,6 @@ import com.rory.bookstore.domain.Book;
 import com.rory.bookstore.domain.Category;
 import com.rory.bookstore.utils.DBUtils;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -18,33 +17,24 @@ public class BookDaoImpl implements IBookDao {
     @Override
     public int addBook(Book book) throws SQLException {
         final String sql = "insert into tb_book values(?,?,?,?,?,?,?)";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql,
+        return DBUtils.executeUpdate(sql,
                 book.getId(), book.getName(), book.getAuthor(),
                 book.getPrice(), book.getPicturePath(), book.getCategory().getId(), book.getDescription());
-        int result = preparedStatement.executeUpdate();
-        DBUtils.closeConnection();
-        return result;
     }
 
     @Override
     public int removeBook(String bookId) throws SQLException {
         final String sql = "delete from tb_book where id = ?";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, bookId);
-        int result = preparedStatement.executeUpdate();
-        DBUtils.closeConnection();
-        return result;
+        return DBUtils.executeUpdate(sql, bookId);
     }
 
     @Override
     public int updateBook(Book book) throws SQLException {
         final String sql = "update tb_book set " +
                 "name = ?, author = ?, price = ?, picture_path = ?, category_id = ?, description = ? where id = ?";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql,
+        return DBUtils.executeUpdate(sql,
                 book.getName(), book.getAuthor(), book.getPrice(), book.getPicturePath(), book.getCategory().getId(),
                 book.getDescription(), book.getId());
-        int result = preparedStatement.executeUpdate();
-        DBUtils.closeConnection();
-        return result;
     }
 
     @Override
@@ -52,8 +42,7 @@ public class BookDaoImpl implements IBookDao {
         final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description, " +
                 "c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
                 "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id WHERE b.id = ?";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, bookId);
-        ResultSet rs = preparedStatement.executeQuery();
+        ResultSet rs = DBUtils.executeQuery(sql, bookId);
         Book book = null;
         if (rs.next()) {
             Category category = new Category();
@@ -64,6 +53,7 @@ public class BookDaoImpl implements IBookDao {
                     rs.getFloat("price"), rs.getString("picture_path"), category,
                     rs.getString("description"));
         }
+        rs.close();
         DBUtils.closeConnection();
         return book;
     }
@@ -73,8 +63,7 @@ public class BookDaoImpl implements IBookDao {
         final String sql = "SELECT b.id, b.name, b.author, b.price, b.picture_path, b.description," +
                 " c.id as categoryId, c.name as categoryName, c.description as categoryDesc " +
                 "from tb_book b INNER JOIN tb_category c ON c.id = b.category_id order by b.name limit ?, ? ";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql, startIndex, pageSize);
-        ResultSet rs = preparedStatement.executeQuery();
+        ResultSet rs = DBUtils.executeQuery(sql, startIndex, pageSize);
         List<Book> books = new LinkedList<>();
         if (rs != null) {
             while (rs.next()) {
@@ -93,17 +82,17 @@ public class BookDaoImpl implements IBookDao {
                 books.add(book);
             }
         }
+        rs.close();
         DBUtils.closeConnection();
         return books;
     }
 
     @Override
     public int findBookCount() throws SQLException {
-        final String sql = "select count(*) as totalNum from tb_book";
-        PreparedStatement preparedStatement = DBUtils.getPreparedStatement(sql);
-        ResultSet rs = preparedStatement.executeQuery();
+        final String sql = "select count(*) as totalCount from tb_book";
+        ResultSet rs = DBUtils.executeQuery(sql);
         if (rs.next()) {
-            return Integer.parseInt(rs.getString("totalNum"));
+            return Integer.parseInt(rs.getString("totalCount"));
         }
         return 0;
     }

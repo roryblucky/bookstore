@@ -5,6 +5,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -27,6 +28,16 @@ public class DBUtils {
     }
 
 
+    public static ResultSet executeQuery(String sql, Object... args) throws SQLException {
+        return getPreparedStatement(sql, args).executeQuery();
+    }
+
+    public static int executeUpdate(String sql, Object... args) throws SQLException {
+        int result = getPreparedStatement(sql, args).executeUpdate();
+        closeConnection();
+        return result;
+    }
+
     private static Connection getConnection() {
 
         Connection conn = connectionThreadLocal.get();
@@ -41,7 +52,7 @@ public class DBUtils {
         return conn;
     }
 
-    public static PreparedStatement getPreparedStatement(String sql, Object... args) {
+    private static PreparedStatement getPreparedStatement(String sql, Object... args) {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = getConnection().prepareStatement(sql);

@@ -1,6 +1,5 @@
 package com.rory.bookstore.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ public class Order {
     private Float totalPrice;
     private int status;//0未发货 1 发货 2 确认收货
     private User customer;
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
 
     public String getId() {
         return id;
@@ -51,5 +50,16 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", status=" + status +
+                ", customer=" + customer +
+                ", orderItems=" + orderItems +
+                '}';
     }
 }
