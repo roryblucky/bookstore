@@ -12,6 +12,18 @@ public class Order {
     private User customer;
     private List<OrderItem> orderItems;
 
+
+    public Order() {
+    }
+
+    public Order(String id, Float totalPrice, int status, User customer, List<OrderItem> orderItems) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.customer = customer;
+        this.orderItems = orderItems;
+    }
+
     public String getId() {
         return id;
     }

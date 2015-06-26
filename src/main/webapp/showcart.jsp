@@ -37,7 +37,7 @@
             <td><a href="${pageContext.request.contextPath}/book_removeBookFromCart.action?id=${item.id}">删除</a></td>
         </tr>
     </c:forEach>
-    <c:if test="${totalPrice}">
+    <c:if test="${totalPrice != 0}">
         <tr>
             <td>
                 总价为${requestScope.totalPrice}
@@ -47,7 +47,8 @@
     <tr>
         <td>
             <c:if test="${fn:length(shopcart) > 0}">
-                <button onclick="window.location='${pageContext.request.contextPath}/order_commitBill.action'">结算
+                <button onclick="window.location='${pageContext.request.contextPath}/order_commitBill.action?totalPrice=${requestScope.totalPrice}'">
+                    结算
                 </button>
             </c:if>
 

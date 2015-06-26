@@ -7,6 +7,14 @@ public class OrderItem {
     private String id;
     private Book book;
 
+    public OrderItem() {
+    }
+
+    public OrderItem(String id, Book book) {
+        this.id = id;
+        this.book = book;
+    }
+
     public String getId() {
         return id;
     }

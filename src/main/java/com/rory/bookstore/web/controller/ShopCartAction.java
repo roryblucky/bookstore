@@ -12,7 +12,7 @@ import java.util.List;
 public class ShopCartAction {
     public String getTotalPrice(HttpServletRequest request, HttpServletResponse response) {
         List<Book> shopCart = (List<Book>) request.getSession().getAttribute("shopcart");
-        Float price = null;
+        float price = 0.0f;
         if (shopCart != null) {
             for (Book book : shopCart) {
                 price += book.getPrice();
