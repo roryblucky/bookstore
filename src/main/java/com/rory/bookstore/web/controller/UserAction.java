@@ -45,9 +45,10 @@ public class UserAction {
         String userPassword = request.getParameter("passwd");
         String userPhoneNum = request.getParameter("phoneNum");
         String emailAddress = request.getParameter("email");
+        String userAddress = request.getParameter("address");
         String verifyCode = SignatureUtils.generateSignature(userName, emailAddress);
 
-        User user = new User(userName, userPassword, userPhoneNum, emailAddress, verifyCode);
+        User user = new User(userName, userPassword, userPhoneNum, userAddress, emailAddress, verifyCode);
         service.addUser(user);
 
         //send mail

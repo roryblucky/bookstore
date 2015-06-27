@@ -19,7 +19,7 @@
     <c:if test="${sessionScope.user!=null }">
         欢迎您：${sessionScope.user.name}
         <a href="${pageContext.request.contextPath}/user_logout.action">注销</a>
-        <a href="${pageContext.request.contextPath}/">我的订单</a>
+        <a href="${pageContext.request.contextPath}/order_getUserOrders.action">我的订单</a>
     </c:if>
     <a href="${pageContext.request.contextPath}/shopcart_getTotalPrice.action">我的购物车</a>
 </div>

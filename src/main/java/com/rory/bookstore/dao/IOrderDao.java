@@ -1,6 +1,7 @@
 package com.rory.bookstore.dao;
 
 import com.rory.bookstore.domain.Order;
+import com.rory.bookstore.domain.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,6 +17,8 @@ public interface IOrderDao {
     int updateOrder(Order order) throws SQLException;
 
     Order findById(String orderId) throws SQLException;
+
+    List<Order> findOrdersByUser(User user) throws SQLException;
 
     List<Order> findPageRecords(int startIndex, int pageSize) throws SQLException;
 

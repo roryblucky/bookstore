@@ -3,12 +3,14 @@ package com.rory.bookstore.service.impl;
 import com.rory.bookstore.dao.IOrderDao;
 import com.rory.bookstore.dao.impl.OrderDaoImpl;
 import com.rory.bookstore.domain.Order;
+import com.rory.bookstore.domain.User;
 import com.rory.bookstore.service.IOrderService;
 import com.rory.bookstore.utils.BeanFactory;
 import com.rory.bookstore.utils.StringUtils;
 import com.rory.bookstore.web.bean.PageBean;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by RoryGao on 15/6/26.
@@ -77,5 +79,17 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         return pageBean;
+    }
+
+    @Override
+    public List<Order> findOrdersByUser(User user) {
+        List<Order> orders = null;
+
+        try {
+            orders = orderDao.findOrdersByUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
     }
 }

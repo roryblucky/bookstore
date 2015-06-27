@@ -51,6 +51,7 @@ public class OrderDaoImpl implements IOrderDao {
                 "  o.status         AS orderStatus," +
                 "  u.user_name      AS userName," +
                 "  u.user_phone_num AS userPhone," +
+                "  y.user_address AS userAddress," +
                 "  u.email_address  AS email" +
                 " FROM tb_order o" +
                 "  INNER JOIN tb_orderItem i ON o.id = i.order_id" +
@@ -63,6 +64,7 @@ public class OrderDaoImpl implements IOrderDao {
             User customer = new User();
             customer.setName(orderRs.getString("userName"));
             customer.setPhoneNum(orderRs.getString("userPhone"));
+            customer.setAddress(orderRs.getString("userAddress"));
             customer.setEmailAddress(orderRs.getString("email"));
             order = new Order();
             order.setId(orderId);
@@ -72,6 +74,20 @@ public class OrderDaoImpl implements IOrderDao {
             order.setOrderItems(orderItems);
         }
         return order;
+    }
+
+    @Override
+    public List<Order> findOrdersByUser(User user) throws SQLException {
+        final String sql = "select * from tb_order where customer_id = ?";
+        ResultSet rs = DBUtils.executeQuery(sql, user.getId());
+
+        List<Order> orders = new ArrayList<>();
+        while (rs.next()) {
+            Order order = new Order(rs.getString("id"), rs.getFloat("total_price"), rs.getInt("status"),
+                    user, this.getOrderItems(rs.getString("id")));
+            orders.add(order);
+        }
+        return orders;
     }
 
     private List<OrderItem> getOrderItems(String orderId) throws SQLException {
@@ -115,11 +131,11 @@ public class OrderDaoImpl implements IOrderDao {
                 "  o.status         AS orderStatus," +
                 "  u.user_name      AS userName," +
                 "  u.user_phone_num AS userPhone," +
+                "  u.user_address AS userAddress," +
                 "  u.email_address  AS email" +
                 " FROM tb_order o" +
-                "  INNER JOIN tb_orderItem i ON o.id = i.order_id" +
                 "  INNER JOIN tb_user u ON u.id = o.customer_id" +
-                " LIMIT ? ?";
+                " LIMIT ?, ?";
         ResultSet orderRs = DBUtils.executeQuery(orderSql, startIndex, pageSize);
         List<Order> orders = new ArrayList<>();
         while (orderRs.next()) {
@@ -127,6 +143,7 @@ public class OrderDaoImpl implements IOrderDao {
             User customer = new User();
             customer.setName(orderRs.getString("userName"));
             customer.setPhoneNum(orderRs.getString("userPhone"));
+            customer.setAddress(orderRs.getString("userAddress"));
             customer.setEmailAddress(orderRs.getString("email"));
             order.setId(orderRs.getString("orderId"));
             order.setTotalPrice(orderRs.getFloat("orderPrice"));

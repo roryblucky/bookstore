@@ -42,8 +42,8 @@
         </td>
         <td colspan="3">
             第${pageBean.currentPage}页&nbsp;&nbsp;共${pageBean.totalPages}页&nbsp;&nbsp;
-            <a href="${pageContext.request.contextPath}/book_showAllBooks.action?pageNum=${pageBean.currentPage - 1 > 0 ? pageBean.currentPage - 1 : 1}">上一页</a>
-            <a href="${pageContext.request.contextPath}/book_showAllBooks.action?pageNum=${pageBean.currentPage + 1 > pageBean.totalPages? pageBean.totalPages : pageBean.currentPage + 1}">下一页</a>
+            <a href="${pageContext.request.contextPath}/book_showAllBooks.action?flag=admin&pageNum=${pageBean.currentPage - 1 > 0 ? pageBean.currentPage - 1 : 1}">上一页</a>
+            <a href="${pageContext.request.contextPath}/book_showAllBooks.action?flag=admin&pageNum=${pageBean.currentPage + 1 > pageBean.totalPages? pageBean.totalPages : pageBean.currentPage + 1}">下一页</a>
         </td>
     </tr>
 </table>

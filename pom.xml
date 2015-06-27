@@ -14,7 +14,6 @@
 
     <dependencies>
         <!-- Servlet api & JSP API-->
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -29,7 +28,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JTSL tag-->
+        <!-- JSTL tag-->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
@@ -83,7 +82,7 @@
         <finalName>bookstore</finalName>
 
         <plugins>
-            <!-- complie plugin-->
+            <!-- compile plugin-->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>

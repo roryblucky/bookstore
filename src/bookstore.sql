@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `bookstore_db` /*!40100 DEFAULT CHARACTER SET utf8
-  COLLATE utf8_unicode_ci */;
-USE `bookstore_db`;
 -- MySQL dump 10.13  Distrib 5.6.22, for osx10.8 (x86_64)
 --
 -- Host: localhost    Database: bookstore_db
@@ -68,8 +65,7 @@ VALUES ('00249d58588543598f3b8dd522b93437', 'xz', 'zx', 22.00, NULL, 'e00b4c7295
   ('5658d70f42b046e0b3b4685d625dc5a4', 'Python', '123', 11.30, NULL, '06c7ea238a414cf398a563069038c095', 'asdasdad'),
   ('9e446a7228644dccb69b9b51c7cae25a', 'javaMail', 'sd', 24.00, '8577b53b8dbc4d40beb1eacfca5d14aa_javamail.gif',
    'e00b4c7295684894aad89cf993749d9e', 'das'),
-  ('bc06230ae2d04b9abb25dd661145f7fd', 'sadsd', 'dad', 1.20, '93422bf7c5894539ac41d36779d2cf21_',
-   '06c7ea238a414cf398a563069038c095', 'asdad'),
+  ('bc06230ae2d04b9abb25dd661145f7fd', 'sadsd', 'dad', 1.20, '<null>', '06c7ea238a414cf398a563069038c095', 'asdad'),
   ('f79d8881f2284acba0ac714457b7950f', 'Oracle Database 11g', 'Rory', 24.00, NULL, 'e00b4c7295684894aad89cf993749d9e',
    'ada');
 /*!40000 ALTER TABLE `tb_book` ENABLE KEYS */;
@@ -176,36 +172,6 @@ LOCK TABLES `tb_orderItem` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tb_sys_user`
---
-
-DROP TABLE IF EXISTS `tb_sys_user`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tb_sys_user` (
-  `id`     VARCHAR(50)
-           COLLATE utf8_unicode_ci NOT NULL,
-  `name`   VARCHAR(50)
-           COLLATE utf8_unicode_ci NOT NULL,
-  `passwd` VARCHAR(50)
-           COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_sys_user`
---
-
-LOCK TABLES `tb_sys_user` WRITE;
-/*!40000 ALTER TABLE `tb_sys_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_sys_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tb_user`
 --
 
@@ -226,6 +192,8 @@ CREATE TABLE `tb_user` (
   `verify_code`    VARCHAR(50)
                    COLLATE utf8_unicode_ci NOT NULL,
   `isActive`       BIT(1)                  NOT NULL,
+  `user_address` TEXT
+                 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `verify_code` (`verify_code`)
 )
@@ -240,14 +208,8 @@ CREATE TABLE `tb_user` (
 
 LOCK TABLES `tb_user` WRITE;
 /*!40000 ALTER TABLE `tb_user` DISABLE KEYS */;
-INSERT INTO `tb_user` VALUES ('1dbb661822c7409cbc9f68f5910dd24c', 'rock', '123', '123123', 'roryblucky@gmail.com',
-                              'd3c41015f8be19d844d3d5ef78a45807', ''),
-  ('b46d7f4586e249e3a0180112fe2e1631', '哈哈哈', '926555', '18710856557', 'roryblucky@gmail.com',
-   'e909314c981d1097a064183ed540f9f6', ''),
-  ('e2943b91463d43749b303d87eb593139', 'Rory', '123', '123313', 'roryblucky@gmail.com',
-   '1d9732e05a2f555799fcc896f394bec9', ''),
-  ('fdd4dfe10ccd461fa43308820a86ad2f', '淡定', '123', '1111', 'roryblucky@gmail.com', '316ff25298270b7f48e38c520d9d4974',
-   '');
+INSERT INTO `tb_user` VALUES ('e2943b91463d43749b303d87eb593139', 'Rory', '123', '123313', 'roryblucky@gmail.com',
+                              '1d9732e05a2f555799fcc896f394bec9', '', '宝鸡市渭滨区广元路22号');
 /*!40000 ALTER TABLE `tb_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -260,4 +222,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-20 17:50:05
+-- Dump completed on 2015-06-27 17:44:07

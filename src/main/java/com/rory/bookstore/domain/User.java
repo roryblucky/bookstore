@@ -9,6 +9,7 @@ public class User {
     private String pwd;
     private String phoneNum;
     private String emailAddress;
+    private String address;
     private String verifyCode;
     private boolean isActive;
 
@@ -16,20 +17,22 @@ public class User {
     public User() {
     }
 
-    public User(String id, String name, String pwd, String phoneNum, String emailAddress, String verifyCode, boolean isActive) {
+    public User(String id, String name, String pwd, String phoneNum, String address, String emailAddress, String verifyCode, boolean isActive) {
         this.id = id;
         this.name = name;
         this.pwd = pwd;
         this.phoneNum = phoneNum;
+        this.address = address;
         this.emailAddress = emailAddress;
         this.verifyCode = verifyCode;
         this.isActive = isActive;
     }
 
-    public User(String name, String pwd, String phoneNum, String emailAddress, String verifyCode) {
+    public User(String name, String pwd, String phoneNum, String address, String emailAddress, String verifyCode) {
         this.name = name;
         this.pwd = pwd;
         this.phoneNum = phoneNum;
+        this.address = address;
         this.emailAddress = emailAddress;
         this.verifyCode = verifyCode;
     }
@@ -83,6 +86,14 @@ public class User {
         this.verifyCode = verifyCode;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public boolean isActive() {
         return isActive;
     }
@@ -90,4 +101,5 @@ public class User {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
+
 }

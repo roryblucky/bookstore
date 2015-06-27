@@ -43,7 +43,7 @@ public class UserDaoImpl implements IUserDao {
         User user = null;
         if (rs.next()) {
             user = new User(rs.getString("id"), rs.getString("user_name"), rs.getString("user_pwd"),
-                    rs.getString("user_phone_num"), rs.getString("email_address"),
+                    rs.getString("user_phone_num"), rs.getString("user_address"), rs.getString("email_address"),
                     rs.getString("verify_code"), rs.getBoolean("isActive"));
         }
         rs.close();
@@ -59,7 +59,7 @@ public class UserDaoImpl implements IUserDao {
 
         if (rs.next()) {
             user = new User(rs.getString("id"), rs.getString("user_name"), rs.getString("user_pwd"),
-                    rs.getString("user_phone_num"), rs.getString("email_address"),
+                    rs.getString("user_phone_num"), rs.getString("user_address"), rs.getString("email_address"),
                     rs.getString("verify_code"), rs.getBoolean("isActive"));
         }
         rs.close();
@@ -75,7 +75,7 @@ public class UserDaoImpl implements IUserDao {
 
         if (rs.next()) {
             user = new User(rs.getString("id"), rs.getString("user_name"), rs.getString("user_pwd"),
-                    rs.getString("user_phone_num"), rs.getString("email_address"),
+                    rs.getString("user_phone_num"), rs.getString("user_address"), rs.getString("email_address"),
                     rs.getString("verify_code"), rs.getBoolean("isActive"));
         }
         rs.close();

@@ -39,13 +39,13 @@
     </c:forEach>
     <c:if test="${totalPrice != 0}">
         <tr>
-            <td>
+            <td colspan="6">
                 总价为${requestScope.totalPrice}
             </td>
         </tr>
     </c:if>
     <tr>
-        <td>
+        <td colspan="6">
             <c:if test="${fn:length(shopcart) > 0}">
                 <button onclick="window.location='${pageContext.request.contextPath}/order_commitBill.action?totalPrice=${requestScope.totalPrice}'">
                     结算

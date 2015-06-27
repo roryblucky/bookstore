@@ -13,5 +13,5 @@
 <h1>Welcome!</h1>
 <a href="${pageContext.request.contextPath}/category_showAllCategories.action">分类管理</a>
 <a href="${pageContext.request.contextPath}/book_showAllBooks.action?flag=admin">书籍管理</a>
-<a href="">订单管理</a>
+<a href="${pageContext.request.contextPath}/order_showAllOrders.action">订单管理</a>
 <br><br>

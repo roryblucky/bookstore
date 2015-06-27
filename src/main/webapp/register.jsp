@@ -40,6 +40,12 @@
             </td>
         </tr>
         <tr>
+            <td>(*)收获地址：</td>
+            <td>
+                <input type="text" name="address"/>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <input type="submit" value="注册"/>
             </td>
